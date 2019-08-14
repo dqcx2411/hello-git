@@ -1,0 +1,146 @@
+#include<iostream>
+using namespace std;
+
+
+//自定义整数栈类(用动态数组实现)
+class Stack {
+	public:
+	Stack(int m_size);      //构造并给出最大数量
+	Stack(const Stack  &s2) {for(int i=0;i<sizeof(this->int_stack)/sizeof(int);i++)
+	{
+		this->int_stack[i]=int_stack[i];
+		
+	}
+	this->max_size=s2.max_size;
+	this->stack_top=s2.stack_top;
+	   }
+	
+	~Stack();  //析构函数
+	void in_stack(int temp);        //入栈
+	bool check_stack_full() const;
+	bool check_stack_empty() const;
+	void out_stack_top() const;
+	void out_and_delete_stack_top();
+	friend void showStack(Stack &s);
+	Stack &operator= (const Stack s2);
+	int getMaxTop()const { return max_size; }
+	private:
+	int max_size;          //最大容量
+	int *int_stack;        //数组
+	int stack_top;         //栈当前数量
+};
+
+
+Stack& Stack::operator= (const Stack s2) {
+	this->int_stack=new int [s2.max_size];
+	for(int i=0;i<sizeof(s2.max_size)/sizeof(int);i++)
+	{
+		this->int_stack[i]=s2.int_stack[i];
+		
+	}
+	this->max_size=s2.max_size;
+	this->stack_top=s2.stack_top;
+	return *this;
+	
+	
+}
+
+Stack::~Stack() {
+	delete int_stack;
+	
+}
+
+Stack::Stack(int m_size=0) {
+	int_stack=new int [m_size];
+	max_size=m_size;
+	stack_top=0;
+}
+
+void Stack::in_stack(int temp) {
+	while(check_stack_full()==true)
+		return;
+	int_stack[stack_top]=temp;
+	stack_top++;
+	return;
+}
+
+void Stack::out_stack_top()const {
+	cout<<int_stack[stack_top-1];
+	return ;
+}
+
+void Stack::out_and_delete_stack_top() {
+	cout<<int_stack[stack_top-1];
+	int_stack[stack_top-1]=0;
+	stack_top--;
+	return;
+}
+
+bool Stack::check_stack_full() const {
+	if(stack_top==max_size-1)
+		return true;
+	return false;
+}
+
+bool Stack::check_stack_empty() const {
+	if(stack_top==0)
+		return true;
+	return false;
+}
+
+
+//输出栈的所有元素
+void showStack(Stack &s) {
+ int x;
+ for (int i=0;i<s.getMaxTop();i++) {
+  //获得栈(顶)元素并存入x中
+  if (s.int_stack[i]!=0)
+  {
+   s.out_stack_top();
+   cout<<' ';
+   s.out_and_delete_stack_top();
+  }
+  else
+   cout<<"Stack is empty.\n";
+  
+  //删除栈(顶)元素并存入x中
+  /* if (s.stack_top--)
+   cout<<s.int_stack[i]<<endl;
+  else
+   cout<<"Stack is empty.\n"; */
+ }
+}
+
+int main() {
+ int i,n,x;
+ cin>>n;
+ //定义一个栈最多可以存放n个元素
+ Stack s(n);
+ 
+ for (i=0;i<s.getMaxTop();i++) {
+  cin>>x;
+  //元素x压入栈(顶)
+  s.in_stack(x);
+  if (s.check_stack_full()==true) {
+   cout<<"Stack is full.\n";
+  }
+ }
+ cout<<endl;
+ 
+ //用默认长度构造2个整数栈s1和s2
+ Stack s2,s1;
+ s2=s1=s;   //使用赋值运算    problem
+
+ //用栈s2构造s3(会调用拷贝构造函数)
+  //Stack s3(s2);
+ 
+  showStack(s); cout<<endl;
+ 
+  //showStack(s1); cout<<endl;
+ 
+  //showStack(s3); cout<<endl;
+
+ //s2.showStatus();
+
+ return 0;
+}
