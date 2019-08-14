@@ -1,0 +1,85 @@
+# include <iostream>
+# include <cstdlib>
+# c program 
+using namespace std;
+//整数栈类
+class Stack {
+	public:
+	Stack(int m_size);      //构造并给出最大数量
+	~Stack();  //析构函数
+	void in_stack();        //入栈
+	int check_stack_full() const;
+	int check_stack_empty() const;
+	void out_stack_top() const;
+	void out_and_delete_stack_top();
+	private:
+	int max_size;          //最大容量
+	int *int_stack;        //数组
+	int stack_top;         //栈当前数量
+};
+
+Stack::~Stack() {
+	delete int_stack;
+	
+}
+
+Stack::Stack(int m_size) {
+	int_stack=new int [m_size];
+	max_size=m_size;
+	stack_top=0;
+}
+
+void Stack::in_stack() {
+	while(check_stack_full()==1)
+		return;
+	int temp;
+	cin>>temp;
+	int_stack[stack_top]=temp;
+	stack_top++;
+	return;
+}
+
+void Stack::out_stack_top()const {
+	cout<<int_stack[stack_top-1];
+	return ;
+}
+
+void Stack::out_and_delete_stack_top() {
+	cout<<int_stack[stack_top-1];
+	int_stack[stack_top-1]=0;
+	stack_top--;
+	return;
+}
+
+int Stack::check_stack_full() const {
+	if(stack_top==max_size)
+		return 1;
+	return 0;
+}
+
+int Stack::check_stack_empty() const {
+	if(stack_top==0)
+		return 1;
+	return 0;
+}
+
+int main() {
+	int n,m_size;
+	cin>>m_size;
+	Stack s1(m_size);
+	cout<<s1.check_stack_full()<<"test"<<endl;
+	for(int i=0;i<m_size;i++)
+	{
+		s1.in_stack();
+	}
+	for(int i=0;i<m_size;i++)
+	{
+		s1.out_stack_top();
+		cout<<" ";
+		s1.out_and_delete_stack_top();
+		cout<<endl;
+		
+	}
+	return 0;
+}
+
